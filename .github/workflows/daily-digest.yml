@@ -1,0 +1,47 @@
+name: Daily Tech Digest
+2
+ 
+3
+on:
+4
+  schedule:
+5
+    - cron: "30 1 * * *"   # 01:30 UTC = 07:00 IST
+6
+  workflow_dispatch:        # lets you run it manually to test
+7
+ 
+8
+jobs:
+9
+  send-digest:
+10
+    runs-on: ubuntu-latest
+11
+    steps:
+12
+      - uses: actions/checkout@v4
+13
+      - uses: actions/setup-python@v5
+14
+        with:
+15
+          python-version: "3.12"
+16
+          cache: pip
+17
+      - run: pip install -r requirements.txt
+18
+      - run: python digest.py
+19
+        env:
+20
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+21
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+22
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+23
+          TO_EMAILS: ${{ secrets.TO_EMAILS }}
+24
+ 
